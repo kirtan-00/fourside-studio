@@ -103,11 +103,29 @@ function onScrub(p) {
   progTc.textContent = tc; tlTc.textContent = tc;
 }
 
-/* ---------- the one continuous timeline (desktop only) ---------- */
-if (!isMobile) {
+/* ---------- mobile: keep the touch scroll from fighting the pinned animation ---------- */
+ScrollTrigger.config({ ignoreMobileResize: true });
+if (isMobile) ScrollTrigger.normalizeScroll(true);
+
+// scale the Premiere editor so the whole thing fits a phone screen instead of clipping
+function fitDeck() {
+  const deck = document.querySelector(".deck-layer");
+  const mon = document.querySelector(".monitor");
+  if (!deck || !mon) return;
+  if (isMobile) {
+    const base = 680;                 // design width the editor renders comfortably at
+    mon.style.width = base + "px";
+    const fit = Math.min(1, (window.innerWidth - 12) / base);
+    deck.style.transformOrigin = "center center";
+    deck.style.transform = `scale(${fit})`;
+  }
+}
+fitDeck();
+
+/* ---------- the one continuous timeline ---------- */
 const t = gsap.timeline({
   defaults: { ease: "power3.out" },
-  scrollTrigger: { trigger: ".show", start: "top top", end: "+=720%", scrub: reduce ? false : 1,
+  scrollTrigger: { trigger: ".show", start: "top top", end: isMobile ? "+=560%" : "+=720%", scrub: reduce ? false : 1,
     pin: true, anticipatePin: 1, invalidateOnRefresh: true,
     onUpdate: self => onScrub(self.progress), onRefresh: self => onScrub(self.progress) }
 });
@@ -156,8 +174,8 @@ t.to(monitor, { scale: .78, duration: 1.4, ease: "power2.inOut" }, 8.8)
 
 onScrub(0);
 alignScene();
-addEventListener("load", () => { alignScene(); ScrollTrigger.refresh(); });
-}
+addEventListener("load", () => { fitDeck(); alignScene(); ScrollTrigger.refresh(); });
+addEventListener("orientationchange", () => setTimeout(() => { fitDeck(); alignScene(); ScrollTrigger.refresh(); }, 250));
 
 /* ---------- generative ambient audio (muted until click) ---------- */
 const soundBtn = document.getElementById("sound");
