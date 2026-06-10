@@ -335,6 +335,22 @@
     .caps-grid{ grid-template-columns:1fr; }
     .cat-head .count{ margin-left:0; }
   }
+
+  /* ============ MOBILE: simple hero instead of the pinned editor animation ============ */
+  .mobile-hero{ display:none; flex-direction:column; align-items:center; justify-content:center; text-align:center; min-height:86vh; padding:16vh 26px 11vh; gap:16px; }
+  .mobile-hero .mh-logo{ width:min(330px,74vw); height:auto; }
+  .mobile-hero .mh-tag{ font-family:var(--mono); font-size:12px; letter-spacing:.3em; text-transform:uppercase; color:var(--paper); margin-top:6px; }
+  .mobile-hero .mh-sub{ font-family:var(--mono); font-size:9.5px; letter-spacing:.18em; text-transform:uppercase; color:var(--paper-dim); }
+  .mobile-hero .mh-rule{ width:30px; height:2px; border-radius:2px; background:var(--prism); margin:6px 0; }
+  .mobile-hero .mh-cue{ margin-top:20px; font-family:var(--mono); font-size:10px; letter-spacing:.24em; text-transform:uppercase; color:var(--paper-dim); animation:nudge 1.8s ease-in-out infinite; }
+  @media (max-width:760px){
+    .nav{ opacity:1; mix-blend-mode:normal; }
+    .nav .brand img{ height:15px; }
+    .sound, .scroll-arrow{ display:none !important; }
+    .show{ position:relative; height:auto; min-height:auto; overflow:visible; perspective:none; display:block; }
+    .show .room, .show .deck-layer, .show .scene, .show .reveal-cta{ display:none !important; }
+    .mobile-hero{ display:flex; }
+  }
 </style>
 </head>
 <body>
@@ -347,6 +363,13 @@
 
   <!-- THE SHOW -->
   <section class="show" id="top">
+    <div class="mobile-hero">
+      <img class="mh-logo" src="assets/logo.png" alt="Fourside Studio" />
+      <span class="mh-rule"></span>
+      <p class="mh-tag">360° Creative Studio</p>
+      <p class="mh-sub">Marketing · Branding &amp; PR · Production · Design</p>
+      <span class="mh-cue">Scroll to the work ↓</span>
+    </div>
     <div class="room"><div class="wall"></div><div class="desk"></div></div>
 
     <div class="deck-layer">

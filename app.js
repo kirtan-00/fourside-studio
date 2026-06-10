@@ -5,6 +5,7 @@
    ============================================================ */
 gsap.registerPlugin(ScrollTrigger);
 const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+const isMobile = matchMedia("(max-width: 760px)").matches;
 const lerp = (a, b, t) => a + (b - a) * t;
 const clamp01 = (x) => x < 0 ? 0 : x > 1 ? 1 : x;
 const pad = (n) => String(n).padStart(2, "0");
@@ -102,7 +103,8 @@ function onScrub(p) {
   progTc.textContent = tc; tlTc.textContent = tc;
 }
 
-/* ---------- the one continuous timeline ---------- */
+/* ---------- the one continuous timeline (desktop only) ---------- */
+if (!isMobile) {
 const t = gsap.timeline({
   defaults: { ease: "power3.out" },
   scrollTrigger: { trigger: ".show", start: "top top", end: "+=720%", scrub: reduce ? false : 1,
@@ -155,6 +157,7 @@ t.to(monitor, { scale: .78, duration: 1.4, ease: "power2.inOut" }, 8.8)
 onScrub(0);
 alignScene();
 addEventListener("load", () => { alignScene(); ScrollTrigger.refresh(); });
+}
 
 /* ---------- generative ambient audio (muted until click) ---------- */
 const soundBtn = document.getElementById("sound");
@@ -240,7 +243,7 @@ document.querySelectorAll('a[href^="#"]').forEach(a => {
     window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY, behavior: "smooth" });
   });
 });
-addEventListener("resize", () => { alignScene(); ScrollTrigger.refresh(); });
+if (!isMobile) addEventListener("resize", () => { alignScene(); ScrollTrigger.refresh(); });
 
 /* ---------- SELECTED WORK grids ---------- */
 (function renderWork() {
