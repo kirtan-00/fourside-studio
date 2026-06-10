@@ -350,6 +350,12 @@
       --side:660px; --thick:13px;
     }
     .stage .monitor{ width:1085px; }
+    /* labels inside the editor 25% bigger on phone (same positions) */
+    .stage .prog-cap{ font-size:20px; }
+    .stage .prog-cap small{ font-size:12.5px; }
+    .stage .clip{ font-size:12.5px; }
+    .stage .clip .clip-num{ font-size:10px; }
+    .stage .bin-item{ font-size:12.5px; }
     /* performance: kill the per-frame repainters that make phones lag */
     .grain{ display:none !important; }
     .vignette{ display:none !important; }
@@ -358,6 +364,10 @@
     .scroll-arrow{ mix-blend-mode:normal; }
     .sl *{ animation:none !important; }
     .pool{ animation:none !important; }
+    /* footer: stack + center instead of an overlapping 3-column row */
+    .contact .foot{ position:static; flex-direction:column; align-items:center; justify-content:center; gap:6px; text-align:center; padding:26px 20px 30px; }
+    .contact .foot .foot-mail, .contact .foot span:last-child{ display:none; }
+    .contact{ padding-bottom:0; }
   }
 </style>
 </head>
@@ -489,7 +499,7 @@
       <span class="eyebrow">Kirtan Purohit · Selected Work</span>
       <h2>Content <em>speaks</em> first.</h2>
       <p class="lead">Work produced by <b>Kirtan Purohit</b>, cofounder at Fourside Studio. Digital video commercials and reels that stop the scroll, built on real storytelling and crafted visuals. For <b>Gujarat Titans</b> (IPL · 2025 &amp; 2026), <b>Zepto</b> and the brands building their categories.</p>
-      <p class="statline"><b>48</b> films · <b>9</b> brands · <b>2</b> IPL seasons</p>
+      <p class="statline"><b>250+</b> videos produced · <b>30+</b> brands · <b>3</b> years and ongoing</p>
     </div>
 
     <div class="brands-row">
@@ -556,7 +566,7 @@
         <a href="mailto:purohit.krick@gmail.com"><span class="ci-label">Email</span>purohit.krick@gmail.com</a>
         <a href="tel:+917487049706"><span class="ci-label">Phone</span>+91 74870 49706</a>
       </div>
-      <p class="contact-name"><b>Kirtan Purohit</b> · Cofounder, Fourside Studio</p>
+      <p class="contact-name"><b>Kirtan Purohit</b> · Cofounder</p>
     </div>
     <div class="foot">
       <span>© 2026 Fourside Studio</span>
