@@ -336,11 +336,20 @@
     .cat-head .count{ margin-left:0; }
   }
 
-  /* ============ MOBILE: same animation, sized to fit ============ */
+  .stage{ position:absolute; inset:0; }
+
+  /* ============ MOBILE: render the exact desktop animation on a fixed canvas, scaled to fit ============ */
   @media (max-width:760px){
     .nav .brand img{ height:15px; }
-    .ed-tools{ display:none; }
-    .reveal-cta .hint{ font-size:9px; letter-spacing:.2em; }
+    .reveal-cta .hint{ font-size:11px; letter-spacing:.2em; }
+    .stage{
+      inset:auto; left:50%; top:50%;
+      width:1180px; height:820px;
+      transform-origin:center center;
+      transform:translate(-50%,-50%) scale(var(--m,.32));
+      --side:660px; --thick:13px;
+    }
+    .stage .monitor{ width:1085px; }
   }
 </style>
 </head>
@@ -354,6 +363,7 @@
 
   <!-- THE SHOW -->
   <section class="show" id="top">
+   <div class="stage">
     <div class="room"><div class="wall"></div><div class="desk"></div></div>
 
     <div class="deck-layer">
@@ -462,6 +472,7 @@
     </div>
 
     <div class="reveal-cta"><div class="hint">Four sides · one timeline · scroll on to the work</div></div>
+   </div>
   </section>
 
   <!-- SELECTED WORK -->
