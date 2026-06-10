@@ -120,7 +120,7 @@ setStage();
 /* ---------- the one continuous timeline ---------- */
 const t = gsap.timeline({
   defaults: { ease: "power3.out" },
-  scrollTrigger: { trigger: ".show", start: "top top", end: isMobile ? "+=240%" : "+=720%", scrub: reduce ? false : 1,
+  scrollTrigger: { trigger: ".show", start: "top top", end: isMobile ? "+=240%" : "+=720%", scrub: reduce ? false : (isMobile ? true : 1),
     pin: true, anticipatePin: 1, invalidateOnRefresh: true,
     onUpdate: self => onScrub(self.progress), onRefresh: self => onScrub(self.progress) }
 });
@@ -205,7 +205,7 @@ function setPlaying(on) {
   master.gain.setTargetAtTime(on ? .9 : .0001, actx.currentTime, on ? .6 : .3);
   soundBtn.classList.toggle("on", on);
 }
-soundBtn.addEventListener("click", () => { if (!started) { startAudio(); setPlaying(true); } else setPlaying(!playing); });
+if (soundBtn) soundBtn.addEventListener("click", () => { if (!started) { startAudio(); setPlaying(true); } else setPlaying(!playing); });
 
 /* ---------- interactive logo: directional invert ---------- */
 const logoSwap = document.querySelector(".logo-swap");
