@@ -120,7 +120,7 @@ setStage();
 /* ---------- the one continuous timeline ---------- */
 const t = gsap.timeline({
   defaults: { ease: "power3.out" },
-  scrollTrigger: { trigger: ".show", start: "top top", end: isMobile ? "+=240%" : "+=720%", scrub: reduce ? false : (isMobile ? true : 1),
+  scrollTrigger: { trigger: ".show", start: "top top", end: isMobile ? "+=480%" : "+=720%", scrub: reduce ? false : (isMobile ? 1 : 1),
     pin: true, anticipatePin: 1, invalidateOnRefresh: true,
     onUpdate: self => onScrub(self.progress), onRefresh: self => onScrub(self.progress) }
 });
