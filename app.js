@@ -132,7 +132,7 @@ t.to(".panel.top",    { yPercent: 0, z: 0, rotateX: 0, rotateZ: 0, opacity: 1, d
  .to(".panel.right",  { xPercent: 0, z: 0, rotateY: 0, rotateZ: 0, opacity: 1, duration: 1 }, .15)
  .to(".frame", { rotateY: 0, rotateX: 0, scale: 1, duration: 1.1, ease: "back.out(1.4)" }, .12)
  .to(".nav", { opacity: 1, duration: .6 }, .5)
- .to(".scroll-arrow", { opacity: 0, duration: .4 }, .2);
+ .to(".scroll-arrow, .scroll-hint, .water-glow", { opacity: 0, duration: .4 }, .2);
 t.to(".flash", { opacity: .85, duration: .05 }, 1.0)
  .to(".flash", { opacity: 0, duration: .5, ease: "power2.in" }, 1.06)
  .to(".tick", { opacity: 1, duration: .3, stagger: .04 }, .98)
@@ -297,4 +297,55 @@ if (!isMobile) addEventListener("resize", () => { alignScene(); ScrollTrigger.re
   fill("grid-sports", SPORTS);
   fill("grid-dvc", DVC);
   fill("grid-trending", TRENDING);
+})();
+
+/* ---------- landing scroll hint: letters part around the cursor like water ---------- */
+(function waterHint() {
+  const textEl = document.getElementById("hintText");
+  const glow   = document.querySelector(".water-glow");
+  if (!textEl) return;
+  textEl.innerHTML = textEl.textContent.toUpperCase().split("").map(c =>
+    c === " " ? `<span class="gap"></span>` : `<span class="ltr">${c}</span>`).join("");
+  if (reduce) return; // static text remains as the non-motion fallback
+
+  const ltrs = [...textEl.querySelectorAll(".ltr")].map((el, i) => ({ el, i, x: 0, y: 0, vx: 0, vy: 0, cx: 0, cy: 0 }));
+  const measure = () => ltrs.forEach(l => {
+    const r = l.el.getBoundingClientRect();
+    l.cx = r.left + r.width / 2 - l.x;   // home centre, minus current offset
+    l.cy = r.top + r.height / 2 - l.y;
+  });
+  measure(); addEventListener("resize", measure);
+
+  let mx = -1e4, my = -1e4, gx = innerWidth / 2, gy = innerHeight * 0.58, seen = false;
+  addEventListener("pointermove", e => {
+    mx = e.clientX; my = e.clientY;
+    if (!seen) { seen = true; glow.classList.add("on"); }
+  }, { passive: true });
+
+  const R = 170, FORCE = 46, STIFF = 0.085, DAMP = 0.82; // damping < 1 = water resistance
+  let tm = 0;
+  (function tick() {
+    requestAnimationFrame(tick);
+    if (scrollY > innerHeight * 0.6) return;        // hint has faded — skip the work
+    tm += 0.016;
+    for (const l of ltrs) {
+      // idle: gentle phase-offset bob, like floating on water
+      let tx = 0, ty = Math.sin(tm * 1.6 + l.i * 0.55) * 3.5;
+      const dx = (l.cx + l.x) - mx, dy = (l.cy + l.y) - my;
+      const d = Math.hypot(dx, dy);
+      if (d < R && d > 0.001) {
+        const s = Math.pow(1 - d / R, 1.6) * FORCE; // smooth falloff, strongest up close
+        tx += dx / d * s;
+        ty += dy / d * s + Math.sin(tm * 9 + l.i) * s * 0.08; // slight turbulence while displaced
+      }
+      l.vx += (tx - l.x) * STIFF; l.vy += (ty - l.y) * STIFF;
+      l.vx *= DAMP; l.vy *= DAMP;
+      l.x += l.vx; l.y += l.vy;
+      l.el.style.transform = `translate(${l.x}px,${l.y}px) rotate(${l.x * 0.12}deg)`;
+    }
+    if (seen) { // sheen trails the cursor lazily, like light on water
+      gx += (mx - gx) * 0.07; gy += (my - gy) * 0.07;
+      glow.style.transform = `translate(${gx}px,${gy}px) translate(-50%,-50%)`;
+    }
+  })();
 })();

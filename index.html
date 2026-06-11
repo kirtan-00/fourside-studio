@@ -74,6 +74,18 @@
   .scroll-arrow svg{ width:26px; height:26px; display:block; animation:nudge 1.8s ease-in-out infinite; }
   @keyframes nudge{ 0%,100%{transform:translateY(0);opacity:.5;} 50%{transform:translateY(6px);opacity:1;} }
 
+  /* landing scroll hint — letters part around the cursor like water */
+  .scroll-hint{ position:fixed; left:50%; top:58%; transform:translateX(-50%); z-index:54; pointer-events:none; }
+  .hint-text{ font-weight:700; font-size:clamp(18px,4vw,40px); letter-spacing:.42em; padding-left:.42em;
+    text-transform:uppercase; color:var(--paper); opacity:.9; white-space:nowrap; }
+  .hint-text .ltr{ display:inline-block; will-change:transform; }
+  .hint-text .gap{ display:inline-block; width:.9em; }
+  .water-glow{ position:fixed; left:0; top:0; width:380px; height:380px; border-radius:50%; z-index:53;
+    pointer-events:none; opacity:0; mix-blend-mode:screen; transition:opacity 1.2s cubic-bezier(.22,.61,.36,1);
+    background:radial-gradient(circle, rgba(255,255,255,.075), rgba(255,255,255,.028) 42%, transparent 66%); }
+  .water-glow.on{ opacity:1; }
+  @media (prefers-reduced-motion: reduce){ .water-glow{ display:none; } }
+
   /* ============ THE SHOW — one continuous pinned shot ============ */
   .show{ position:relative; z-index:1; height:100vh; width:100%; overflow:hidden; perspective:1200px; perspective-origin:50% 47%; }
 
@@ -581,6 +593,10 @@
   <div class="grain"></div>
   <div class="vignette"></div>
 
+  <div class="water-glow"></div>
+  <div class="scroll-hint" id="scrollHint">
+    <div class="hint-text" id="hintText">Scroll Down</div>
+  </div>
   <span class="scroll-arrow" aria-hidden="true">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 4v15M6 13l6 6 6-6"/></svg>
   </span>
